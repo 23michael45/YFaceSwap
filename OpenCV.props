@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <OPENCV_DIR>D:\DevelopProj\OpenCV\opencv-3.4.0\opencv-3.4.0</OPENCV_DIR>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include\opencv2;$(OPENCV_DIR)\include\opencv;$(OPENCV_DIR)\include;$(OPENCV_DIR)\modules\core\include;$(OPENCV_DIR)\build_x64;$(OPENCV_DIR)\modules\imgproc\include;$(OPENCV_DIR)\modules\dnn\include;$(OPENCV_DIR)\modules\highgui\include;$(OPENCV_DIR)\modules\imgcodecs\include;$(OPENCV_DIR)\modules\videoio\include;$(OPENCV_DIR)\modules\calib3d\include;$(OPENCV_DIR)\modules\features2d\include;$(OPENCV_DIR)\modules\flann\include;$(OPENCV_DIR)\modules\photo\include;$(OPENCV_DIR)\modules\shape\include;$(OPENCV_DIR)\modules\ml\include;$(OPENCV_DIR)\modules\video\include;$(OPENCV_DIR)\modules\objdetect\include;$(OPENCV_DIR)\modules\stitching\include;$(OPENCV_DIR)\modules\superres\include;$(OPENCV_DIR)\modules\videostab\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OPENCV_DIR)\build_x64\lib\Release</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world340.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="OPENCV_DIR">
+      <Value>$(OPENCV_DIR)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

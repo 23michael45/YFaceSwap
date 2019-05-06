@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="FaceSwap">
+      <UniqueIdentifier>{b0c2be0c-c7b7-4ab6-adbe-4607347f3ee9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="FaceSwap\FaceDetectorAndTracker.cpp">
+      <Filter>FaceSwap</Filter>
+    </ClCompile>
+    <ClCompile Include="FaceSwap\FaceSwapper.cpp">
+      <Filter>FaceSwap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\dlib\dlib-19.17\dlib\all\source.cpp" />
+    <ClCompile Include="FaceSwap\FaceDetector.cpp">
+      <Filter>FaceSwap</Filter>
+    </ClCompile>
+    <ClCompile Include="FaceSwap\FaceExchanger.cpp">
+      <Filter>FaceSwap</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FaceSwap\FaceDetectorAndTracker.h">
+      <Filter>FaceSwap</Filter>
+    </ClInclude>
+    <ClInclude Include="FaceSwap\FaceSwapper.h">
+      <Filter>FaceSwap</Filter>
+    </ClInclude>
+    <ClInclude Include="FaceSwap\FaceDetector.h">
+      <Filter>FaceSwap</Filter>
+    </ClInclude>
+    <ClInclude Include="FaceSwap\FaceExchanger.h">
+      <Filter>FaceSwap</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -6,11 +6,29 @@
 #include "FaceDetector.h".
 #include "FaceExchanger.h"
 
-#include <filesystem>
+#include <dirent.h>
+#include <sys/types.h>
+
+//#include <filesystem>
 using namespace std; 
-namespace fs = std::filesystem;
+//namespace fs = std::filesystem;
 
+int getdir(std::string dir,std::vector<std::string> &files)
+{
+	DIR *dp;
+	struct dirent *dirp;
+	if((dp = opendir(dir.c_str())) == NULL)
+	{
+		cout << "Error";
+	}
+	while((dirp = readdir(dp)) != NULL)
+	{
+		files.push_back(string(dirp->d_name));
+	}
+	closedir(dp);
+	return 0;
 
+}
 
 int exchange(FaceDetector& detector,FaceExchanger& exchanger,std::string srcfile,std::string dstfile,cv::Mat& mat)
 {
@@ -136,7 +154,7 @@ vector<string> split(const string &s, const string &seperator) {
 	string_size i = 0;
 
 	while (i != s.size()) {
-		//ÕÒµ½×Ö·û´®ÖÐÊ×¸ö²»µÈÓÚ·Ö¸ô·ûµÄ×ÖÄ¸£»
+		//ï¿½Òµï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½
 		int flag = 0;
 		while (i != s.size() && flag == 0) {
 			flag = 1;
@@ -148,7 +166,7 @@ vector<string> split(const string &s, const string &seperator) {
 				}
 		}
 
-		//ÕÒµ½ÓÖÒ»¸ö·Ö¸ô·û£¬½«Á½¸ö·Ö¸ô·ûÖ®¼äµÄ×Ö·û´®È¡³ö£»
+		//ï¿½Òµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 		flag = 0;
 		string_size j = i;
 		while (j != s.size() && flag == 0) {
@@ -213,19 +231,22 @@ int main()
 				std::string dstpath = arr[1];
 				std::string genpath = arr[2];
 
-				if (!fs::exists(genpath))
-				{
-					fs::create_directory(genpath);
+				// if (!fs::exists(genpath))
+				// {
+				// 	fs::create_directory(genpath);
 
-				}
-
+				// }
+				std::vector<std::string> files;
+				getdir(dstpath,files);
 				int i = 0;
-				for (const auto & entry : fs::directory_iterator(dstpath))
+				for (const auto & entry : files)//fs::directory_iterator(dstpath))
 				{
-					std::cout << entry.path().string() << std::endl;
+					// std::cout << entry.path().string() << std::endl;
+					std::cout << entry << std::endl;
 
 					cv::Mat ret;
-					exchange(detector, exchanger, srcfile, entry.path().string(),ret);
+					// exchange(detector, exchanger, srcfile, entry.path().string(),ret);
+					exchange(detector, exchanger, srcfile, entry,ret);
 
 					i++;
 

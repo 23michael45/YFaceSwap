@@ -10,7 +10,7 @@
 
 FaceDetectorAndTracker::FaceDetectorAndTracker(const std::string cascadeFilePath, const int cameraIndex, size_t numFaces)
 {
-    m_camera = std::make_unique<cv::VideoCapture>(cameraIndex);
+    m_camera = std::make_shared<cv::VideoCapture>(cameraIndex);
     if (m_camera->isOpened() == false)
     {
 		m_Image = cv::imread("images/switch.jpg");
@@ -32,7 +32,7 @@ FaceDetectorAndTracker::FaceDetectorAndTracker(const std::string cascadeFilePath
 
 	}
 
-    m_faceCascade = std::make_unique<cv::CascadeClassifier>(cascadeFilePath);
+    m_faceCascade = std::make_shared<cv::CascadeClassifier>(cascadeFilePath);
     if (m_faceCascade->empty())
     {
         std::cerr << "Error loading cascade file " << cascadeFilePath << std::endl << 

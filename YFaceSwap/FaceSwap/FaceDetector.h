@@ -37,12 +37,12 @@ private:
     /*
      * Video capture object used for retrieving camera frames
      */
-    std::unique_ptr<cv::VideoCapture> m_camera;
+    std::shared_ptr<cv::VideoCapture> m_camera;
 
     /*
      * Cascade classifier object used for detecting faces in frames
      */
-    std::unique_ptr<cv::CascadeClassifier> m_faceCascade;
+    std::shared_ptr<cv::CascadeClassifier> m_faceCascade;
 
     /*
      * Downscaled camera frame. Downscaling speeds up detection 

@@ -7,11 +7,12 @@
 #include <opencv2/highgui/highgui.hpp>
 
 #include <iostream>
+#include <memory>
 
 FaceDetector::FaceDetector(const std::string cascadeFilePath)
 {
 
-    m_faceCascade = std::make_unique<cv::CascadeClassifier>(cascadeFilePath);
+    m_faceCascade = std::make_shared<cv::CascadeClassifier>(cascadeFilePath);
     if (m_faceCascade->empty())
     {
         std::cerr << "Error loading cascade file " << cascadeFilePath << std::endl << 

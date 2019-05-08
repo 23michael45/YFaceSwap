@@ -44,9 +44,9 @@ extern "C" {
 		return gFacSwapLib.Finalize();
 	}
 
-	JNIEXPORT jstring JNICALL Java_com_yfaceswap_FaceSwapLib_Calculate(JNIEnv *, jobject, jstring srcPath, jstring dstPath, jstring savePath)
+	JNIEXPORT jstring JNICALL Java_com_yfaceswap_FaceSwapLib_Calculate(JNIEnv *env, jobject obj, jstring srcPath, jstring dstPath, jstring savePath)
 	{
-		ret = gFaceCloudLib.Calculate(jstring2string(env, srcPath), jstring2string(env, dstPath), jstring2string(env, savePath));
+		std::string ret = gFacSwapLib.Calculate(jstring2string(env, srcPath), jstring2string(env, dstPath), jstring2string(env, savePath));
 		return env->NewStringUTF(ret.c_str());
 	}
 

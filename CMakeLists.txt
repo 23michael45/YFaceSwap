@@ -11,10 +11,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D DLIB_NO_GUI_SUPPORT")
 
 add_definitions(-DDLIB_NO_GUI_SUPPORT)
-remove_definitions(-DDLIB_CHECK_FOR_VERSION_MISMATCH)
-remove_definitions(-DDLIB_VERSION_MISMATCH_CHECK__EXPECTED_VERSION_19_17_0)
+#remove_definitions(-DDLIB_CHECK_FOR_VERSION_MISMATCH)
+#remove_definitions(-DDLIB_VERSION_MISMATCH_CHECK__EXPECTED_VERSION_19_17_0)
 
-set(OUTPUT_NAME "YFaceSwapaPP")
+#set(OUTPUT_NAME "YFaceSwapApp")
+set(OUTPUT_NAME "YFaceSwapLib")
 
 set(OPENCV_DIR "/home/michael/DevelopProj/Thirdparty/OpenCV/opencv-3.4.0/")
 set(DLIB_DIR "/home/michael/DevelopProj/Thirdparty/DLib/dlib-19.17")
@@ -30,16 +31,27 @@ message(STATUS "PROJECT_SOURCE_DIR is: ${PROJECT_SOURCE_DIR}")
 
 INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap")
 INCLUDE_DIRECTORIES("/usr/local/include")
+INCLUDE_DIRECTORIES("/usr/lib/jvm/java-8-openjdk-amd64/include")
+INCLUDE_DIRECTORIES("/usr/lib/jvm/java-8-openjdk-amd64/include/linux")
+# add_executable(${OUTPUT_NAME}
+# ${PROJECT_SOURCE_DIR}/YFaceSwap/main.cpp 
+# ${DLIB_DIR}/dlib/all/source.cpp
+# ${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceDetector.cpp 
+# ${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceExchanger.cpp
+# ${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceDetectorAndTracker.cpp
+# ${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceSwapper.cpp)
 
-add_executable(${OUTPUT_NAME}
+
+add_library(${OUTPUT_NAME}
 ${PROJECT_SOURCE_DIR}/YFaceSwap/main.cpp 
 ${DLIB_DIR}/dlib/all/source.cpp
 ${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceDetector.cpp 
 ${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceExchanger.cpp
 ${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceDetectorAndTracker.cpp
-${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceSwapper.cpp)
+${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceSwapper.cpp
+${PROJECT_SOURCE_DIR}/Java/src/com_yfaceswap_FaceSwapLib.cpp)
 
-message(Status "DLIB name: ${DLIB_LIBRARIES}")
+set_target_properties(${OUTPUT_NAME} PROPERTIES SUFFIX ".so")
 
 link_directories("/usr/local/lib")
 target_link_libraries(${OUTPUT_NAME}

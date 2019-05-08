@@ -20,16 +20,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\dlib\dlib-19.17\dlib\all\source.cpp" />
+    <ClCompile Include="..\Java\src\com_yfaceswap_FaceSwapLib.cpp" />
     <ClCompile Include="FaceSwap\FaceDetector.cpp" />
     <ClCompile Include="FaceSwap\FaceDetectorAndTracker.cpp" />
     <ClCompile Include="FaceSwap\FaceExchanger.cpp" />
+    <ClCompile Include="FaceSwap\FaceSwapLib.cpp" />
     <ClCompile Include="FaceSwap\FaceSwapper.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Java\src\com_yfaceswap_FaceSwapLib.h" />
     <ClInclude Include="FaceSwap\FaceDetector.h" />
     <ClInclude Include="FaceSwap\FaceDetectorAndTracker.h" />
     <ClInclude Include="FaceSwap\FaceExchanger.h" />
+    <ClInclude Include="FaceSwap\FaceSwapLib.h" />
     <ClInclude Include="FaceSwap\FaceSwapper.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -81,6 +85,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\OpenCV_d.props" />
     <Import Project="..\DLib.props" />
+    <Import Project="..\Jni.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />

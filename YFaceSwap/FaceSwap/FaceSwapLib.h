@@ -7,7 +7,7 @@ class FaceSwapLib
 {
 
 public:
-	bool Init();
+	bool Init(std::string detectModelPath,std::string alignModelPath);
 	bool Finalize();
 
 	std::string Calculate(std::string srcPath, std::string dstPath, std::string savePath);

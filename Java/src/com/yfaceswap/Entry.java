@@ -5,8 +5,8 @@ public class Entry {
 	 public static void main(String[] args) {
 		 
 	        //System.loadLibrary("WindowsLib");
-	        System.loadLibrary("YFaceSwapLib");
-
+	        // System.loadLibrary("YFaceSwapLib");
+			System.load("/usr/lib/jvm/java-8-openjdk-amd64/lib/libYFaceSwapLib.so");
 			
 	        FaceSwapLib fslib = new FaceSwapLib();
 			// String detectModelPath = "";

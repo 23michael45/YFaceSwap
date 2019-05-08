@@ -5,7 +5,7 @@ public class Entry {
 	 public static void main(String[] args) {
 		 
 	        //System.loadLibrary("WindowsLib");
-	        System.loadLibrary("FaceSwapLib");
+	        System.loadLibrary("YFaceSwapLib");
 	        
 	        
 	        FaceSwapLib fslib = new FaceSwapLib();

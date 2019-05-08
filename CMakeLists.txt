@@ -42,13 +42,14 @@ INCLUDE_DIRECTORIES("/usr/lib/jvm/java-8-openjdk-amd64/include/linux")
 # ${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceSwapper.cpp)
 
 
-add_library(${OUTPUT_NAME}
-${PROJECT_SOURCE_DIR}/YFaceSwap/main.cpp 
+add_library(${OUTPUT_NAME} SHARED
+#${PROJECT_SOURCE_DIR}/YFaceSwap/main.cpp 
 ${DLIB_DIR}/dlib/all/source.cpp
 ${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceDetector.cpp 
 ${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceExchanger.cpp
 ${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceDetectorAndTracker.cpp
 ${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceSwapper.cpp
+${PROJECT_SOURCE_DIR}/YFaceSwap/FaceSwap/FaceSwapLib.cpp
 ${PROJECT_SOURCE_DIR}/Java/src/com_yfaceswap_FaceSwapLib.cpp)
 
 set_target_properties(${OUTPUT_NAME} PROPERTIES SUFFIX ".so")

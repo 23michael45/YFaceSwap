@@ -2,16 +2,16 @@ package com.yfaceswap;
 public class FaceSwapLib {
 	
 	
-	//³õÊ¼»¯»»Á³¼ÆËã¿â
+	//åˆå§‹åŒ–æ¢è„¸è®¡ç®—åº“
 	public native boolean Init();
 	
-	//Ïú»Ù»»Á³¼ÆËã¿â
+	//é”€æ¯æ¢è„¸è®¡ç®—åº“
 	public native boolean Finalize();
 	
-	//¼ÆËã»»Á³
-	//srcPath ÉÏ´«µÄÓÃ»§ÏàÆ¬Â·¾¶
-	//dstPath Òª±»»»Á³µÄÍ¼Æ¬Â·¾¶
-	//savePath »»Á³ºóÏëÒª±£´æµÄÂ·¾¶
-	//return »»Á³ºóÊµ¼Ê±£´æµÄÂ·¾¶
+	//è®¡ç®—æ¢è„¸
+	//srcPath ä¸Šä¼ çš„ç”¨æˆ·ç›¸ç‰‡è·¯å¾„
+	//dstPath è¦è¢«æ¢è„¸çš„å›¾ç‰‡è·¯å¾„
+	//savePath æ¢è„¸åæƒ³è¦ä¿å­˜çš„è·¯å¾„
+	//return æ¢è„¸åå®é™…ä¿å­˜çš„è·¯å¾„
 	public native String Calculate(String srcPath,String dstPath, String savaPath);
 }

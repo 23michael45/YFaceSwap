@@ -1,11 +1,27 @@
 #include "FaceSwapLib.h"
 
 
-bool FaceSwapLib::Init()
+bool FaceSwapLib::Init(std::string detectModelPath,std::string alignModelPath)
 {
-	m_spDetector = std::make_shared<FaceDetector>("haarcascade_frontalface_default.xml");
-	m_spFaceExchanger = std::make_shared<FaceExchanger>("shape_predictor_68_face_landmarks.dat");
+	if(detectModelPath == "")
+	{
+		m_spDetector = std::make_shared<FaceDetector>("haarcascade_frontalface_default.xml");
 
+	}
+	else
+	{
+		m_spDetector = std::make_shared<FaceDetector>(detectModelPath);
+	}
+
+	if(alignModelPath == "")
+	{
+		m_spFaceExchanger = std::make_shared<FaceExchanger>("shape_predictor_68_face_landmarks.dat");
+	}
+	else
+	{
+		m_spFaceExchanger = std::make_shared<FaceExchanger>(alignModelPath);
+	}
+	
 	return true;
 }
 

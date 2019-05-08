@@ -17,8 +17,8 @@ add_definitions(-DDLIB_NO_GUI_SUPPORT)
 #set(OUTPUT_NAME "YFaceSwapApp")
 set(OUTPUT_NAME "YFaceSwapLib")
 
-set(OPENCV_DIR "/home/michael/DevelopProj/Thirdparty/OpenCV/opencv-3.4.0/")
-set(DLIB_DIR "/home/michael/DevelopProj/Thirdparty/DLib/dlib-19.17")
+set(OPENCV_DIR "${PROJECT_SOURCE_DIR}/../../Thirdparty/OpenCV/opencv-3.4.0/")
+set(DLIB_DIR "${PROJECT_SOURCE_DIR}/../../Thirdparty/DLib/dlib-19.17")
 
 find_package(OpenCV 3.4.0 REQUIRED)
 find_package(dlib 19.17 REQUIRED)

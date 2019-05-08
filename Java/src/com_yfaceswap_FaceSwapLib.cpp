@@ -33,9 +33,9 @@ extern "C" {
 
 
 
-	JNIEXPORT jboolean JNICALL Java_com_yfaceswap_FaceSwapLib_Init(JNIEnv *, jobject)
+	JNIEXPORT jboolean JNICALL Java_com_yfaceswap_FaceSwapLib_Init(JNIEnv *env, jobject,jstring detectModelPath, jstring alignModelPath)
 	{
-		return gFacSwapLib.Init();
+		return gFacSwapLib.Init(jstring2string(env, detectModelPath),jstring2string(env, alignModelPath));
 	}
 
 	JNIEXPORT jboolean JNICALL Java_com_yfaceswap_FaceSwapLib_Finalize(JNIEnv *, jobject)

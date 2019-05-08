@@ -13,7 +13,7 @@ extern "C" {
  * Signature: ()Z
  */
 	JNIEXPORT jboolean JNICALL Java_com_yfaceswap_FaceSwapLib_Init
-	(JNIEnv *, jobject);
+	(JNIEnv *, jobject,jstring,jstring);
 
 /*
  * Class:     com_yfaceswap_FaceSwapLib

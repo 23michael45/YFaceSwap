@@ -6,11 +6,22 @@ public class Entry {
 		 
 	        //System.loadLibrary("WindowsLib");
 	        System.loadLibrary("YFaceSwapLib");
-	        
-	        
+
+			
 	        FaceSwapLib fslib = new FaceSwapLib();
-	        
-	        fslib.Init();
+			// String detectModelPath = "";
+			// String alignModelPath = "";
+
+			
+			String detectModelPath = "/usr/lib/jvm/java-8-openjdk-amd64/lib/haarcascade_frontalface_default.xml";			
+			String alignModelPath = "/usr/lib/jvm/java-8-openjdk-amd64/lib/shape_predictor_68_face_landmarks.dat"; 
+			if(!fslib.Init(detectModelPath,alignModelPath))
+			{
+
+				System.out.println("Init Failed");
+				return;
+			}
+			System.out.println("Init Success");
 	        
 			String srcPath = "images/src/1.jpg";
 			String dstPath = "images/dst/1.jpg";
@@ -19,7 +30,12 @@ public class Entry {
 
 			String retPath = fslib.Calculate(srcPath,dstPath,savePath);
 			
-	        System.out.println("Calcuate OK");
+			if(retPath == "")
+			{
+				System.out.println("Input File or Folder not found");
+				return;
+			}
+	        System.out.println("Calcuate Success :" + retPath);
 			
 			fslib.Finalize();
 			

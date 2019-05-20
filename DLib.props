@@ -10,7 +10,7 @@
       <AdditionalIncludeDirectories>$(DLIB_DIR)/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(DLIB_DIR)/build_x64\dlib\Debug/dlib19.17.0_debug_64bit_msvc1916.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(DLIB_DIR)/build_x64\dlib\Release/dlib19.17.0_release_64bit_msvc1916.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

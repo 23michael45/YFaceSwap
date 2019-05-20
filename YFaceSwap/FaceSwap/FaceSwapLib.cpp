@@ -29,6 +29,8 @@ bool FaceSwapLib::Finalize()
 {
 	m_spDetector.reset();
 	m_spFaceExchanger.reset();
+
+	return true;
 }
 
 std::string FaceSwapLib::Calculate(std::string srcPath, std::string dstPath, std::string savePath)

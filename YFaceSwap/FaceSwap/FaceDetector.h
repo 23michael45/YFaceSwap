@@ -5,6 +5,7 @@
 #include <string>
 #include <memory>
 
+#include <dlib/image_processing/frontal_face_detector.h>
 namespace cv
 {
     class VideoCapture;
@@ -27,8 +28,6 @@ public:
 
 private:
 
-    /* Returns double inputRect size centered around the same point */
-    static cv::Rect doubleRectSize(const cv::Rect &rect, const cv::Size &frameSize);
 
     /*
      * Private members
@@ -43,6 +42,7 @@ private:
      * Cascade classifier object used for detecting faces in frames
      */
     std::shared_ptr<cv::CascadeClassifier> m_faceCascade;
+
 
     /*
      * Downscaled camera frame. Downscaling speeds up detection 
@@ -59,31 +59,12 @@ private:
      */
     std::vector<cv::Rect> m_facesRects;
 
-    /*
-     * Vector of vector of faces. Used in tracking. One vector per detected face
-     */
-    std::vector<cv::Rect> m_tmpFacesRect;
-
-    std::vector<bool>                       m_tmRunningInRoi;
-    std::vector<long long>                  m_tmStartTime;
-    std::vector<long long>                  m_tmEndTime;
-
-    std::vector<cv::Point2f>                m_facePositions;
-    std::vector<cv::Mat>                    m_faceTemplates;
-    std::vector<cv::Rect>                   m_faceRois;
-
-    cv::Mat                                 m_matchingResult;
-
-    cv::Size                                m_downscaledFrameSize;
-    cv::Size                                m_originalFrameSize;
-    cv::Point2f                             m_ratio;
-
-
-    size_t m_numFaces = 0;
-
-    const double                            m_tmMaxDuration = 2.0;
 
 
 
+
+
+	dlib::frontal_face_detector m_dlibFaceDetector;
+	std::vector<dlib::rectangle> m_dlibFaces;
 };
 

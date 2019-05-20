@@ -4,4 +4,8 @@
     <LocalDebuggerWorkingDirectory>D:\DevelopProj\Yuji\YFaceSwap\YFaceSwap\x64\Debug</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LocalDebuggerWorkingDirectory>D:\DevelopProj\Yuji\YFaceSwap\YFaceSwap\x64\Release</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
 </Project>

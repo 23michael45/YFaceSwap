@@ -23,6 +23,9 @@ FaceDetector::FaceDetector(const std::string cascadeFilePath)
     //}
 
 	m_dlibFaceDetector = dlib::get_frontal_face_detector();
+
+	m_ratio.x = 1;
+	m_ratio.y = 1;
 }
 
 FaceDetector::~FaceDetector()
@@ -46,7 +49,7 @@ std::vector<cv::Rect> FaceDetector::faces()
 		long w = face.width();
 		long h = face.height();
 		
-		faces.push_back(cv::Rect(l,t,w,h));
+		faces.push_back(cv::Rect(l * m_ratio.x,t * m_ratio.y,w * m_ratio.x,h * m_ratio.y));
 	}
     return faces;
 }
@@ -54,16 +57,16 @@ std::vector<cv::Rect> FaceDetector::faces()
 void FaceDetector::detect(cv::Mat img)
 {
 	
-	//m_originalFrameSize.width = (int)img.cols;
-	//m_originalFrameSize.height = (int)img.rows;
-	//m_downscaledFrameSize.width = m_downscaledFrameWidth;
-	//m_downscaledFrameSize.height = (m_downscaledFrameSize.width * m_originalFrameSize.height) / m_originalFrameSize.width;
+	/*m_originalFrameSize.width = (int)img.cols;
+	m_originalFrameSize.height = (int)img.rows;
+	m_downscaledFrameSize.width = m_downscaledFrameWidth;
+	m_downscaledFrameSize.height = (m_downscaledFrameSize.width * m_originalFrameSize.height) / m_originalFrameSize.width;
 
-	//m_ratio.x = (float)m_originalFrameSize.width / m_downscaledFrameSize.width;
-	//m_ratio.y = (float)m_originalFrameSize.height / m_downscaledFrameSize.height;
+	m_ratio.x = (float)m_originalFrameSize.width / m_downscaledFrameSize.width;
+	m_ratio.y = (float)m_originalFrameSize.height / m_downscaledFrameSize.height;
 
 
-	//cv::resize(img, m_downscaledFrame, m_downscaledFrameSize);
+	cv::resize(img, m_downscaledFrame, m_downscaledFrameSize);*/
 
 
  //   // Minimum face size is 1/10th of screen height
@@ -72,8 +75,13 @@ void FaceDetector::detect(cv::Mat img)
  //       cv::Size(m_downscaledFrame.cols / 50, m_downscaledFrame.rows / 50),
  //       cv::Size(m_downscaledFrame.cols * 2 / 3, m_downscaledFrame.rows * 2 / 3));
 
+	//dlib::cv_image<dlib::bgr_pixel> dlib_img = img;
 
-	dlib::cv_image<dlib::bgr_pixel> dlib_img = img;
+	//dlib::cv_image<dlib::bgr_pixel> dlib_img = m_downscaledFrame;
+
+	cv::Mat gray;
+	cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+	dlib::cv_image<uchar> dlib_img = gray;
 
 
 	m_dlibFaces = m_dlibFaceDetector(dlib_img);

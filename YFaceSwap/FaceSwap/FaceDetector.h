@@ -62,6 +62,10 @@ private:
 
 
 
+	cv::Size                                m_downscaledFrameSize;
+	cv::Size                                m_originalFrameSize;
+	cv::Point2f                             m_ratio;
+
 
 
 	dlib::frontal_face_detector m_dlibFaceDetector;

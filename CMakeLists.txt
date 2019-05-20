@@ -11,6 +11,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D DLIB_NO_GUI_SUPPORT")
 
 add_definitions(-DDLIB_NO_GUI_SUPPORT)
+
+add_compile_options(-O3)
+add_compile_options(-mavx)
 #remove_definitions(-DDLIB_CHECK_FOR_VERSION_MISMATCH)
 #remove_definitions(-DDLIB_VERSION_MISMATCH_CHECK__EXPECTED_VERSION_19_17_0)
 

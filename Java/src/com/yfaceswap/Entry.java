@@ -28,7 +28,11 @@ public class Entry {
 			String savePath = "/root/DevelopProj/Yuji/YFaceSwap/bin/upload_dst.jpg";//"images/save/1_1.jpg";
 			
 
+			long startTime = System.nanoTime();
 			String retPath = fslib.Calculate(srcPath,dstPath,savePath);
+			long endTime = System.nanoTime();
+			long timeElapsed = endTime - startTime;
+			System.out.println("Calcuate use Time in milliseconds: " + timeElapsed / 1000000);
 			
 			if(retPath == "")
 			{

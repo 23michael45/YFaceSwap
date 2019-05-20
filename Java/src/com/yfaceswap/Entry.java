@@ -23,9 +23,9 @@ public class Entry {
 			}
 			System.out.println("Init Success");
 	        
-			String srcPath = "images/src/1.jpg";
-			String dstPath = "images/dst/1.jpg";
-			String savePath = "images/save/1_1.jpg";
+			String srcPath = "/root/DevelopProj/Yuji/YFaceSwap/bin/upload.jpg";//"images/src/1.jpg";
+			String dstPath = "/root/DevelopProj/Yuji/YFaceSwap/bin/dst.png";//"images/dst/1.jpg";
+			String savePath = "/root/DevelopProj/Yuji/YFaceSwap/bin/upload_dst.jpg";//"images/save/1_1.jpg";
 			
 
 			String retPath = fslib.Calculate(srcPath,dstPath,savePath);

@@ -35,6 +35,7 @@ bool FaceSwapLib::Finalize()
 
 std::string FaceSwapLib::Calculate(std::string srcPath, std::string dstPath, std::string savePath)
 {
+	std::string error = "";
 	if (m_spFaceExchanger && m_spDetector)
 	{
 		auto time_start = cv::getTickCount();
@@ -48,13 +49,14 @@ std::string FaceSwapLib::Calculate(std::string srcPath, std::string dstPath, std
 		auto srcfaces = m_spDetector->faces();
 		if (srcfaces.size() == 0)
 		{
-			printf("src file no face");
-			return 0;
+			error = "src file no face\n";
+			printf(error.c_str());
+			return error;
 		}
 		else
 		{
 
-			printf("src file face num:%i", srcfaces.size());
+			printf("src file face num:%i\n", srcfaces.size());
 		}
 
 		auto srcFace = srcfaces[0];
@@ -66,13 +68,14 @@ std::string FaceSwapLib::Calculate(std::string srcPath, std::string dstPath, std
 		auto dstfaces = m_spDetector->faces();
 		if (dstfaces.size() == 0)
 		{
-			printf("dst file no face");
-			return 0;
+			error = "dst file no face\n";
+			printf(error.c_str());
+			return error;
 		}
 		else
 		{
 
-			printf("dst file face num:%i", dstfaces.size());
+			printf("dst file face num:%i\n", dstfaces.size());
 		}
 
 		auto dstFace = dstfaces[0];
@@ -89,12 +92,15 @@ std::string FaceSwapLib::Calculate(std::string srcPath, std::string dstPath, std
 		}
 		else
 		{
-			return "error save";
+
+			error = "error save";
+			printf(error.c_str());
+			return error;
 		}
 
 	}
 	else
 	{
-		return "";
+		return error;
 	}
 }

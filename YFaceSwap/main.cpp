@@ -222,8 +222,16 @@ int main()
 
 
 				//cv::imshow("imgSrc", imgSrc);
-				cv::imshow("ret", ret);
-				cv::waitKey();
+				if (ret.cols == 0 || ret.rows == 0)
+				{
+					std::cout << "error ret" << std::endl;
+				}
+				else
+				{
+					cv::imshow("ret", ret);
+					cv::waitKey();
+
+				}
 			}
 			else if (arr.size() == 3)
 			{

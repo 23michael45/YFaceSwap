@@ -25,11 +25,15 @@ public class Entry {
 	        
 			String srcPath = "/root/DevelopProj/Yuji/YFaceSwap/bin/upload.jpg";//"images/src/1.jpg";
 			String dstPath = "/root/DevelopProj/Yuji/YFaceSwap/bin/dst.png";//"images/dst/1.jpg";
+			
+			String maskPath = "/root/DevelopProj/Yuji/YFaceSwap/bin/dst_fore.png";//"images/dst/1.jpg";
 			String savePath = "/root/DevelopProj/Yuji/YFaceSwap/bin/upload_dst.jpg";//"images/save/1_1.jpg";
 			
 
 			long startTime = System.nanoTime();
-			String retPath = fslib.Calculate(srcPath,dstPath,savePath);
+			//String retPath = fslib.Calculate(srcPath,dstPath,savePath);
+			String retPath = fslib.Calculate(srcPath,dstPath,maskPath,savePath);
+			
 			long endTime = System.nanoTime();
 			long timeElapsed = endTime - startTime;
 			System.out.println("Calcuate use Time in milliseconds: " + timeElapsed / 1000000);

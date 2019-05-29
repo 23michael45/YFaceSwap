@@ -10,7 +10,10 @@ public:
 	bool Init(std::string detectModelPath,std::string alignModelPath);
 	bool Finalize();
 
+	std::string Calculate(std::string srcPath, std::string dstPath,cv::Mat &result);
+	
 	std::string Calculate(std::string srcPath, std::string dstPath, std::string savePath);
+	std::string CalculateWithMask(std::string srcPath, std::string dstPath, std::string maskPath, std::string savePath);
 
 
 private:

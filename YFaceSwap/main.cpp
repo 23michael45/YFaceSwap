@@ -8,10 +8,14 @@
 
 #include <dirent.h>
 #include <sys/types.h>
+#include "FaceSwapLib.h"
 
 //#include <filesystem>
 using namespace std; 
 //namespace fs = std::filesystem;
+
+FaceSwapLib gFacSwapLib;
+
 
 int getdir(std::string dir,std::vector<std::string> &files)
 {
@@ -30,79 +34,6 @@ int getdir(std::string dir,std::vector<std::string> &files)
 
 }
 
-int exchange(FaceDetector& detector,FaceExchanger& exchanger,std::string srcfile,std::string dstfile,cv::Mat& mat)
-{
-	try
-	{
-
-		auto time_start = cv::getTickCount();
-
-
-		cv::Mat imgSrc = cv::imread(srcfile);
-		cv::Mat imgDst = cv::imread(dstfile);
-
-		detector.detect(imgSrc);
-
-		auto srcfaces = detector.faces();
-		if (srcfaces.size() == 0)
-		{
-			printf("src file no face");
-			return 0;
-		}
-		else
-		{
-
-			printf("src file face num:%i", srcfaces.size());
-		}
-
-		auto srcFace = srcfaces[0];
-
-		detector.detect(imgDst);
-
-
-
-		auto dstfaces = detector.faces();
-		if (dstfaces.size() == 0)
-		{
-			printf("dst file no face");
-			return 0;
-		}
-		else
-		{
-
-			printf("dst file face num:%i",dstfaces.size());
-		}
-
-		auto dstFace = dstfaces[0];
-
-
-
-		//cv::rectangle(imgSrc, srcFace.tl(), srcFace.br(), (55, 255, 155), 5);
-		//cv::imshow("imgSrc", imgSrc);
-		//cv::waitKey();
-
-
-		//cv::rectangle(imgDst, dstFace.tl(), dstFace.br(), (55, 255, 155), 5);
-		//cv::imshow("imgDst", imgDst);
-		//cv::waitKey();
-
-
-
-		exchanger.swapFaces(imgSrc, imgDst, srcFace, dstFace);
-
-		//cv::imshow("imgSrc", imgSrc);
-		//cv::imshow("imgDst", imgDst);
-		//cv::waitKey();
-
-		imgDst.copyTo(mat);
-	}
-	catch (exception& e)
-	{
-		cout << e.what() << endl;
-	}
-
-	return 0;
-}
 
 int swap()
 {
@@ -187,10 +118,10 @@ vector<string> split(const string &s, const string &seperator) {
 }
 int main()
 {
-	FaceDetector detector("haarcascade_frontalface_default.xml");
-	FaceExchanger exchanger("shape_predictor_68_face_landmarks.dat");
+	/*FaceDetector detector(haarcascade_frontalface_default.xml);
+	FaceExchanger exchanger("shape_predictor_68_face_landmarks.dat");*/
 
-
+	gFacSwapLib.Init("haarcascade_frontalface_default.xml","shape_predictor_68_face_landmarks.dat");
 
 	int key = 0;
 	do 
@@ -199,7 +130,7 @@ int main()
 		key = getchar();
 		if (key == 0x31)
 		{
-			printf("exchanger : input 2 file name   a:b\n");
+			printf("exchanger : input 4 file name   a:b:c:d\n");
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
@@ -211,62 +142,84 @@ int main()
 
 
 			//images/src/1.jpg:images/dst/1.png
-			if (arr.size() == 2)
+			if (arr.size() == 3)
 			{
 				std::string srcfile = arr[0];
 				std::string dstfile = arr[1];
-
-				cv::Mat ret;
-				exchange(detector, exchanger, srcfile, dstfile,ret);
+				std::string savefile = arr[2];
 
 
+				string retpath = gFacSwapLib.Calculate(srcfile, dstfile, savefile);
 
-				//cv::imshow("imgSrc", imgSrc);
-				if (ret.cols == 0 || ret.rows == 0)
+				if (retpath != savefile)
 				{
 					std::cout << "error ret" << std::endl;
 				}
 				else
 				{
-					cv::imshow("ret", ret);
+					auto retImg = cv::imread(retpath);
+					cv::imshow("ret", retImg);
 					cv::waitKey();
 
 				}
 			}
-			else if (arr.size() == 3)
+			if (arr.size() == 4)
 			{
 				std::string srcfile = arr[0];
-				std::string dstpath = arr[1];
-				std::string genpath = arr[2];
+				std::string dstfile = arr[1];
+				std::string maskfile = arr[2];
+				std::string savefile = arr[3];
 
-				// if (!fs::exists(genpath))
-				// {
-				// 	fs::create_directory(genpath);
 
-				// }
-				std::vector<std::string> files;
-				getdir(dstpath,files);
-				int i = 0;
-				for (const auto & entry : files)//fs::directory_iterator(dstpath))
+				string retpath = gFacSwapLib.CalculateWithMask(srcfile, dstfile,maskfile, savefile);
+
+				if (retpath != savefile)
 				{
-					// std::cout << entry.path().string() << std::endl;
-					std::cout << entry << std::endl;
-
-					cv::Mat ret;
-					// exchange(detector, exchanger, srcfile, entry.path().string(),ret);
-					exchange(detector, exchanger, srcfile, entry,ret);
-
-					i++;
-
-
-					char buffer[256];
-					sprintf(buffer, "%s/%i.jpg",genpath.c_str(),i);
-					string savefile = buffer;
-					imwrite(savefile, ret);
+					std::cout << "error ret" << std::endl;
 				}
+				else
+				{
+					auto retImg = cv::imread(retpath);
+					cv::imshow("ret", retImg);
+					cv::waitKey();
 
-
+				}
 			}
+			//else if (arr.size() ==  4)
+			//{
+			//	std::string srcfile = arr[0];
+			//	std::string dstpath = arr[1];
+			//	std::string maskpath = arr[2];
+			//	std::string savefile = arr[3];
+
+			//	// if (!fs::exists(genpath))
+			//	// {
+			//	// 	fs::create_directory(genpath);
+
+			//	// }
+			//	std::vector<std::string> files;
+			//	getdir(dstpath,files);
+			//	int i = 0;
+			//	for (const auto & entry : files)//fs::directory_iterator(dstpath))
+			//	{
+			//		// std::cout << entry.path().string() << std::endl;
+			//		std::cout << entry << std::endl;
+
+			//		cv::Mat ret;
+			//		// exchange(detector, exchanger, srcfile, entry.path().string(),ret);
+			//		exchange(detector, exchanger, srcfile, entry,ret);
+
+			//		i++;
+
+
+			//		char buffer[256];
+			//		sprintf(buffer, "%s/%i.jpg",genpath.c_str(),i);
+			//		string savefile = buffer;
+			//		imwrite(savefile, ret);
+			//	}
+
+
+			//}
 		}
 		else if (key == 0x32)
 		{
@@ -277,4 +230,6 @@ int main()
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	} while (key != 0x39);
+
+	gFacSwapLib.Finalize();
 }

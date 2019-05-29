@@ -33,10 +33,11 @@ bool FaceSwapLib::Finalize()
 	return true;
 }
 
-std::string FaceSwapLib::Calculate(std::string srcPath, std::string dstPath, std::string savePath)
+std::string FaceSwapLib::Calculate(std::string srcPath, std::string dstPath,cv::Mat& result)
 {
 	try
 	{
+
 		std::string error = "";
 		if (m_spFaceExchanger && m_spDetector)
 		{
@@ -90,9 +91,27 @@ std::string FaceSwapLib::Calculate(std::string srcPath, std::string dstPath, std
 
 			m_spFaceExchanger->swapFaces(imgSrc, imgDst, srcFace, dstFace);
 
-			cv::Mat result;
-			imgDst.copyTo(result);
+			result = imgDst.clone();
+			return "";
+		}
+	}
+	catch (std::exception* e)
+	{
+		return "error";
+	}
+}
 
+std::string FaceSwapLib::Calculate(std::string srcPath, std::string dstPath, std::string savePath)
+{
+	try
+	{
+		std::string error;
+
+		cv::Mat result;
+		error = Calculate(srcPath, dstPath, result);
+
+		if (error.empty())
+		{
 			bool b = cv::imwrite(savePath, result);
 			if (b)
 			{
@@ -100,12 +119,10 @@ std::string FaceSwapLib::Calculate(std::string srcPath, std::string dstPath, std
 			}
 			else
 			{
-
 				error = "error save";
 				printf(error.c_str());
 				return error;
 			}
-
 		}
 		else
 		{
@@ -114,6 +131,75 @@ std::string FaceSwapLib::Calculate(std::string srcPath, std::string dstPath, std
 	}
 	catch (std::exception* e)
 	{
-		return "";
+		return "unknown error";
+	}
+}
+
+std::string FaceSwapLib::CalculateWithMask(std::string srcPath, std::string dstPath, std::string maskPath, std::string savePath)
+{
+	try
+	{
+
+		std::string error;
+		cv::Mat result;
+		error = Calculate(srcPath, dstPath, result);
+
+		if (error.empty())
+		{
+
+			cv::Mat imgMask = cv::imread(maskPath, CV_LOAD_IMAGE_UNCHANGED);
+			cv::Mat bgra[4];   //destination array
+			split(imgMask, bgra);//split source
+
+			if (imgMask.cols == 0 || imgMask.rows == 0)
+			{
+				return "mask not exist";
+			}
+
+			//std::cout << bgra[0];
+
+			auto maskA1 = (255 - bgra[3]) / 255;
+			cv::Mat maskA3;
+			cv::cvtColor(maskA1, maskA3, cv::COLOR_GRAY2BGR);
+			cv::multiply(result, maskA3, result);
+
+
+			auto maskB1 = (bgra[3]) / 255;
+			cv::Mat maskB3;
+			cv::cvtColor(maskB1, maskB3, cv::COLOR_GRAY2BGR);
+
+			cv::Mat imgMask3;
+			cv::cvtColor(imgMask, imgMask3, cv::COLOR_BGRA2BGR);
+			cv::multiply(imgMask3, maskB3, imgMask);
+
+
+			cv::add(result, imgMask, result);
+
+
+			bool b = cv::imwrite(savePath, result);
+			if (b)
+			{
+				return savePath;
+			}
+			else
+			{
+				error = "error save";
+				printf(error.c_str());
+				return error;
+			}
+		}
+		else
+		{
+			return error;
+		}
+
+
+
+	}
+	catch (std::exception* e)
+	{
+
+		return "unknown error";
+	
 	}
 }

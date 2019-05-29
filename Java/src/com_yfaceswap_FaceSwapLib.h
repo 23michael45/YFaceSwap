@@ -10,26 +10,34 @@ extern "C" {
 /*
  * Class:     com_yfaceswap_FaceSwapLib
  * Method:    Init
- * Signature: ()Z
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Z
  */
-	JNIEXPORT jboolean JNICALL Java_com_yfaceswap_FaceSwapLib_Init
-	(JNIEnv *, jobject,jstring,jstring);
+JNIEXPORT jboolean JNICALL Java_com_yfaceswap_FaceSwapLib_Init
+  (JNIEnv *, jobject, jstring, jstring);
 
 /*
  * Class:     com_yfaceswap_FaceSwapLib
  * Method:    Finalize
  * Signature: ()Z
  */
-	JNIEXPORT jboolean JNICALL Java_com_yfaceswap_FaceSwapLib_Finalize
-	(JNIEnv *, jobject);
+JNIEXPORT jboolean JNICALL Java_com_yfaceswap_FaceSwapLib_Finalize
+  (JNIEnv *, jobject);
 
 /*
  * Class:     com_yfaceswap_FaceSwapLib
  * Method:    Calculate
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
  */
-	JNIEXPORT jstring JNICALL Java_com_yfaceswap_FaceSwapLib_Calculate
-	(JNIEnv *, jobject, jstring, jstring, jstring);
+JNIEXPORT jstring JNICALL Java_com_yfaceswap_FaceSwapLib_Calculate
+  (JNIEnv *, jobject, jstring, jstring, jstring);
+
+/*
+ * Class:     com_yfaceswap_FaceSwapLib
+ * Method:    CalculateWithMask
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_yfaceswap_FaceSwapLib_CalculateWithMask
+  (JNIEnv *, jobject, jstring, jstring, jstring, jstring);
 
 #ifdef __cplusplus
 }

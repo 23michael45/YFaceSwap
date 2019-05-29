@@ -50,7 +50,11 @@ extern "C" {
 		return env->NewStringUTF(ret.c_str());
 	}
 
-
+	JNIEXPORT jstring JNICALL Java_com_yfaceswap_FaceSwapLib_CalculateWithMask(JNIEnv *env, jobject obj, jstring srcPath, jstring dstPath, jstring maskPath,jstring savePath)
+	{
+		std::string ret = gFacSwapLib.CalculateWithMask(jstring2string(env, srcPath), jstring2string(env, dstPath), jstring2string(env, maskPath), jstring2string(env, savePath));
+		return env->NewStringUTF(ret.c_str());
+	}
 
 
 #ifdef __cplusplus

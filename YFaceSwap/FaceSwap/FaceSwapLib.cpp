@@ -168,8 +168,23 @@ std::string FaceSwapLib::CalculateWithMask(std::string srcPath, std::string dstP
 
 			printf("\nread mask");
 			cv::Mat imgMask = cv::imread(maskPath, CV_LOAD_IMAGE_UNCHANGED);
-			cv::Mat bgra[4];   //destination array
-			split(imgMask, bgra);//split source
+
+			cv::Mat alpha;
+
+			if (imgMask.channels() == 4)
+			{
+
+				cv::Mat bgra[4];   //destination array
+				split(imgMask, bgra);//split source
+				alpha = bgra[3];
+			}
+			else if (imgMask.channels() < 4)
+			{
+				error = "mask not contain alpha";
+				printf(error.c_str());
+				return error;
+			}
+
 
 			if (imgMask.cols == 0 || imgMask.rows == 0)
 			{
@@ -188,14 +203,14 @@ std::string FaceSwapLib::CalculateWithMask(std::string srcPath, std::string dstP
 			//std::cout << bgra[0];
 
 			printf("\nmask alpha1");
-			auto maskA1 = (255 - bgra[3]) / 255;
+			auto maskA1 = (255 - alpha) / 255;
 			cv::Mat maskA3;
 			cv::cvtColor(maskA1, maskA3, cv::COLOR_GRAY2BGR);
 			cv::multiply(result, maskA3, result);
 
 
 			printf("\nmask alpha2");
-			auto maskB1 = (bgra[3]) / 255;
+			auto maskB1 = (alpha) / 255;
 			cv::Mat maskB3;
 			cv::cvtColor(maskB1, maskB3, cv::COLOR_GRAY2BGR);
 

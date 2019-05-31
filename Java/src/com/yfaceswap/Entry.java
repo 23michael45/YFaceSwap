@@ -32,7 +32,7 @@ public class Entry {
 
 			long startTime = System.nanoTime();
 			//String retPath = fslib.Calculate(srcPath,dstPath,savePath);
-			String retPath = fslib.Calculate(srcPath,dstPath,maskPath,savePath);
+			String retPath = fslib.CalculateWithMask(srcPath,dstPath,maskPath,savePath);
 			
 			long endTime = System.nanoTime();
 			long timeElapsed = endTime - startTime;

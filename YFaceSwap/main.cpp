@@ -175,7 +175,7 @@ int main()
 
 				if (retpath != savefile)
 				{
-					std::cout << "error ret" << std::endl;
+					std::cout << "error:" << retpath << std::endl;
 				}
 				else
 				{

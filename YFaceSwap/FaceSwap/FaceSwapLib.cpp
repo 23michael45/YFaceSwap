@@ -137,23 +137,50 @@ std::string FaceSwapLib::Calculate(std::string srcPath, std::string dstPath, std
 
 std::string FaceSwapLib::CalculateWithMask(std::string srcPath, std::string dstPath, std::string maskPath, std::string savePath)
 {
+	std::string error;
 	try
 	{
+		if (srcPath == dstPath ||
+			dstPath == maskPath ||
+			srcPath == maskPath ||
+			savePath == srcPath ||
+			savePath == dstPath ||
+			savePath == maskPath )
+		{
+			error = "input files path can not be same";
+			printf(error.c_str());
+			return error;
+		}
 
-		std::string error;
+
 		cv::Mat result;
 		error = Calculate(srcPath, dstPath, result);
 
 		if (error.empty())
 		{
+			if (maskPath.find(".png") == std::string::npos)
+			{
+				error = "mask not contain alpha,need png";
+				printf(error.c_str());
+				return error;
 
+			}
 			cv::Mat imgMask = cv::imread(maskPath, CV_LOAD_IMAGE_UNCHANGED);
 			cv::Mat bgra[4];   //destination array
 			split(imgMask, bgra);//split source
 
 			if (imgMask.cols == 0 || imgMask.rows == 0)
 			{
-				return "mask not exist";
+				error =  "mask not exist";
+				printf(error.c_str());
+				return error;
+			}
+
+			if (imgMask.cols != result.cols || imgMask.rows != result.rows)
+			{
+				error = "mask and target not same size";
+				printf(error.c_str());
+				return error;
 			}
 
 			//std::cout << bgra[0];
@@ -190,6 +217,7 @@ std::string FaceSwapLib::CalculateWithMask(std::string srcPath, std::string dstP
 		}
 		else
 		{
+			printf(error.c_str());
 			return error;
 		}
 
@@ -199,7 +227,8 @@ std::string FaceSwapLib::CalculateWithMask(std::string srcPath, std::string dstP
 	catch (std::exception* e)
 	{
 
-		return "unknown error";
-	
+		error = "unknown error";
+		printf(error.c_str());
+		return error;
 	}
 }

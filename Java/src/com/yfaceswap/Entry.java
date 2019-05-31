@@ -35,7 +35,7 @@ public class Entry {
 			System.out.println("Calcuate-------------------------------------------------------------------------------------");
 			String retPath = fslib.Calculate(srcPath,dstPath,savePath);
 			System.out.println("CalculateWithMask-------------------------------------------------------------------------------------");
-			String retPath = fslib.CalculateWithMask(srcPath,dstPath,maskPath,savePath);
+			retPath = fslib.CalculateWithMask(srcPath,dstPath,maskPath,savePath);
 			
 			long endTime = System.nanoTime();
 			long timeElapsed = endTime - startTime;

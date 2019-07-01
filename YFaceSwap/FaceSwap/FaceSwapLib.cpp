@@ -167,7 +167,9 @@ std::string FaceSwapLib::CalculateWithMask(std::string srcPath, std::string dstP
 			}
 
 			printf("\nread mask");
-			cv::Mat imgMask = cv::imread(maskPath, CV_LOAD_IMAGE_UNCHANGED);
+			cv::Mat imgMask = cv::imread(maskPath, cv::IMREAD_UNCHANGED);
+			cv::Mat imgMask32F;
+			imgMask.convertTo(imgMask32F, CV_32FC4);
 
 			cv::Mat alpha;
 
@@ -202,27 +204,36 @@ std::string FaceSwapLib::CalculateWithMask(std::string srcPath, std::string dstP
 
 			//std::cout << bgra[0];
 
+			cv::Mat alpha32F;
+			alpha.convertTo(alpha32F, CV_32FC1);
+			cv::Mat result32F;
+			result.convertTo(result32F, CV_32FC3);
+			
+
 			printf("\nmask alpha1");
-			auto maskA1 = (255 - alpha) / 255;
+			auto maskA1 = (255.0f - alpha32F) / 255.0f;
+			//std::cout << maskA1;
 			cv::Mat maskA3;
 			cv::cvtColor(maskA1, maskA3, cv::COLOR_GRAY2BGR);
-			cv::multiply(result, maskA3, result);
+			cv::multiply(result32F, maskA3, result32F);
 
 
 			printf("\nmask alpha2");
-			auto maskB1 = (alpha) / 255;
+			auto maskB1 = (alpha32F) / 255;
 			cv::Mat maskB3;
 			cv::cvtColor(maskB1, maskB3, cv::COLOR_GRAY2BGR);
 
 
 			printf("\nmask blend");
 			cv::Mat imgMask3;
-			cv::cvtColor(imgMask, imgMask3, cv::COLOR_BGRA2BGR);
+			cv::cvtColor(imgMask32F, imgMask3, cv::COLOR_BGRA2BGR);
 			cv::multiply(imgMask3, maskB3, imgMask);
 
 
 			printf("\nmask add");
-			cv::add(result, imgMask, result);
+
+			cv::add(result32F, imgMask, result32F);
+			result32F.convertTo(result, CV_8UC3);
 
 
 			bool b = cv::imwrite(savePath, result);

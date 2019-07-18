@@ -135,6 +135,21 @@ int main()
 		iniSave["images"]["source"] = std::string("images/test01/user1.jpg");
 		iniSave["images"]["dest"] = std::string("images/test01/bk.jpg");
 		iniSave["images"]["out"] = std::string("images/test01/out.jpg");
+
+
+		iniSave["points"]["1"] = std::string("9");
+		iniSave["points"]["2"] = std::string("37");
+		iniSave["points"]["3"] = std::string("46");
+
+		iniSave["offsets"]["v1"] = std::string("0.35");
+		iniSave["offsets"]["h1"] = std::string("0");
+		iniSave["offsets"]["v2"] = std::string("0");
+		iniSave["offsets"]["h2"] = std::string("0.035");
+		iniSave["offsets"]["v3"] = std::string("0");
+		iniSave["offsets"]["h3"] = std::string("-0.035");
+
+
+		iniSave["feather"]["scale"] = std::string("0.095");
 		fileSave.write(iniSave);
 
 	}

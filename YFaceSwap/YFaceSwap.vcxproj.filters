@@ -10,6 +10,9 @@
     <Filter Include="Java\src">
       <UniqueIdentifier>{bc5db1e2-8bb8-4255-a46f-6d0159256d6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{9f9a4ad9-c4c8-48e7-b626-9ee6095f134e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -51,6 +54,9 @@
     </ClInclude>
     <ClInclude Include="FaceSwap\FaceSwapLib.h">
       <Filter>FaceSwap</Filter>
+    </ClInclude>
+    <ClInclude Include="App\ini.h">
+      <Filter>App</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

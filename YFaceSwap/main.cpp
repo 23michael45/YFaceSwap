@@ -9,13 +9,13 @@
 #include <dirent.h>
 #include <sys/types.h>
 #include "FaceSwapLib.h"
+#include "App/ini.h"
 
 //#include <filesystem>
 using namespace std; 
 //namespace fs = std::filesystem;
 
 FaceSwapLib gFacSwapLib;
-
 
 int getdir(std::string dir,std::vector<std::string> &files)
 {
@@ -116,7 +116,72 @@ vector<string> split(const string &s, const string &seperator) {
 	}
 	return result;
 }
+
+
 int main()
+{
+	SetConsoleOutputCP(CP_UTF8);
+
+	std::ifstream ifs;
+	ifs.open("AppConfig.ini", std::ifstream::in);
+	if (ifs.is_open())
+	{
+
+	}
+	else
+	{
+		mINI::INIFile fileSave("AppConfig.ini");
+		mINI::INIStructure iniSave;
+		iniSave["images"]["source"] = std::string("images/test01/user1.jpg");
+		iniSave["images"]["dest"] = std::string("images/test01/bk.jpg");
+		iniSave["images"]["out"] = std::string("images/test01/out.jpg");
+		fileSave.write(iniSave);
+
+	}
+	ifs.close();
+
+
+	gFacSwapLib.Init("haarcascade_frontalface_default.xml", "shape_predictor_68_face_landmarks.dat");
+
+	do 
+	{
+		mINI::INIFile file("AppConfig.ini");
+		mINI::INIStructure ini;
+		file.read(ini);
+
+		std::string srcImage = ini["images"]["source"];
+		std::string dstImage = ini["images"]["dest"];
+		std::string outImage = ini["images"]["out"];
+		std::string maskImage = ini["images"]["mask"];
+
+
+		string retpath = "";
+		if (maskImage == "")
+		{
+
+			retpath = gFacSwapLib.Calculate(srcImage, dstImage, outImage);
+		}
+		else
+		{
+
+			retpath = gFacSwapLib.CalculateWithMask(srcImage, dstImage, maskImage,outImage);
+		}
+		auto retImg = cv::imread(retpath);
+
+		cv::imshow("ret", retImg);
+
+		printf("修改AppConfig.ini后，按回车重新计算！");
+
+		cv::waitKey();
+
+		cvDestroyWindow("ret");
+	} while (true);
+	
+	
+
+}
+
+int main_dep()
 {
 	/*FaceDetector detector(haarcascade_frontalface_default.xml);
 	FaceExchanger exchanger("shape_predictor_68_face_landmarks.dat");*/
@@ -232,4 +297,6 @@ int main()
 	} while (key != 0x39);
 
 	gFacSwapLib.Finalize();
+
+	return 0;
 }

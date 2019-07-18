@@ -1,6 +1,7 @@
 #include "FaceExchanger.h"
 
 #include <iostream>
+#include "App/ini.h"
 
 
 #define ShowAndClose(name,mat) 	cv::imshow(##name, mat);\
@@ -9,6 +10,7 @@ cv::destroyWindow(##name);
 
 FaceExchanger::FaceExchanger(const std::string landmarks_path)
 {
+
     try
     {
         dlib::deserialize(landmarks_path) >> pose_model;
@@ -135,7 +137,7 @@ void FaceExchanger::getFacePoints(const cv::Mat &src,const cv::Mat &dst)
 
 
 
-	//cv::Mat dstdraw;
+	//	cv::Mat dstdraw;
 	//dst.copyTo(dstdraw);
 	//cv::rectangle(dstdraw, rect_dst.tl(), rect_dst.br(), (55, 255, 155), 5);
 	//for (int i = 0; i < 68; i++)
@@ -144,40 +146,76 @@ void FaceExchanger::getFacePoints(const cv::Mat &src,const cv::Mat &dst)
 	//}
 	//ShowAndClose("face keypoint dst", dstdraw)
 
-    points_src[0] = getPoint(0, 0);
-    points_src[1] = getPoint(0, 3);
-    points_src[2] = getPoint(0, 5);
-    points_src[3] = getPoint(0, 8);
-    points_src[4] = getPoint(0, 11);
-    points_src[5] = getPoint(0, 13);
-    points_src[6] = getPoint(0, 16);
-
-    cv::Point2i nose_length = getPoint(0, 27) - getPoint(0, 30);
-    points_src[7] = getPoint(0, 26) + nose_length;
-    points_src[8] = getPoint(0, 17) + nose_length;
 
 
-    points_dst[0] = getPoint(1, 0);
-    points_dst[1] = getPoint(1, 3);
-    points_dst[2] = getPoint(1, 5);
-    points_dst[3] = getPoint(1, 8);
-    points_dst[4] = getPoint(1, 11);
-    points_dst[5] = getPoint(1, 13);
-    points_dst[6] = getPoint(1, 16);
+	mINI::INIFile file("AppConfig.ini");
+	mINI::INIStructure ini;
+	file.read(ini);
+	int g_TransPoint_1 = atoi(ini["points"]["1"].c_str()) - 1;
+	int g_TransPoint_2 = atoi(ini["points"]["2"].c_str()) - 1;
+	int g_TransPoint_3 = atoi(ini["points"]["3"].c_str()) - 1;
 
-    nose_length = getPoint(1, 27) - getPoint(1, 30);
-    points_dst[7] = getPoint(1, 26) + nose_length;
-    points_dst[8] = getPoint(1, 17) + nose_length;
 
-    affine_transform_keypoints_src[0] = points_src[3];
-    affine_transform_keypoints_src[1] = getPoint(0, 36);
-    affine_transform_keypoints_src[2] = getPoint(0, 45);
+	float g_offset_v_1 = atof(ini["offsets"]["v1"].c_str());
+	float g_offset_h_1 = atof(ini["offsets"]["h1"].c_str());
+	float g_offset_v_2 = atof(ini["offsets"]["v2"].c_str());
+	float g_offset_h_2 = atof(ini["offsets"]["h2"].c_str());
+	float g_offset_v_3 = atof(ini["offsets"]["v3"].c_str());
+	float g_offset_h_3 = atof(ini["offsets"]["h3"].c_str());
 
-    affine_transform_keypoints_dst[0] = points_dst[3];
-    affine_transform_keypoints_dst[1] = getPoint(1, 36);
-    affine_transform_keypoints_dst[2] = getPoint(1, 45);
+	float g_feater_scale = atof(ini["feather"]["scale"].c_str());
 
-    feather_amount.width = feather_amount.height = (int)cv::norm(points_dst[0] - points_dst[6]) / 8;
+    points_src[0] = getPoint(0, FACE_GET(LEFT_FACE_CONTOUR_1));
+    points_src[1] = getPoint(0, FACE_GET(LEFT_FACE_CONTOUR_4));
+    points_src[2] = getPoint(0, FACE_GET(LEFT_FACE_CONTOUR_6));
+    points_src[3] = getPoint(0, FACE_GET(MIDDLE_CHIN));
+    points_src[4] = getPoint(0, FACE_GET(RIGHT_FACE_CONTOUR_6));
+    points_src[5] = getPoint(0, FACE_GET(RIGHT_FACE_CONTOUR_4));
+    points_src[6] = getPoint(0, FACE_GET(RIGHT_FACE_CONTOUR_1));
+
+    cv::Point2i src_nose_length = getPoint(0, FACE_GET(MIDDLE_NOSE_1)) - getPoint(0, FACE_GET(MIDDLE_NOSE_4));
+
+	cv::Point2i src_lefteye_length = getPoint(0, FACE_GET(LEFT_EYE_4)) - getPoint(0, FACE_GET(LEFT_EYE_1));
+	cv::Point2i src_righteye_length = getPoint(0, FACE_GET(RIGHT_EYE_4)) - getPoint(0, FACE_GET(RIGHT_EYE_1));
+
+	cv::Point2i src_eye_length = getPoint(0, FACE_GET(RIGHT_EYE_1)) - getPoint(0, FACE_GET(LEFT_EYE_1));
+	cv::Point2i src_chin_length = getPoint(0, FACE_GET(OUT_DOWN_MOUTH)) - getPoint(0, FACE_GET(MIDDLE_CHIN));
+    points_src[7] = getPoint(0, FACE_GET(RIGHT_EYEBROW_1)) + src_nose_length;
+    points_src[8] = getPoint(0, FACE_GET(LEFT_EYEBROW_1)) + src_nose_length;
+
+
+
+	affine_transform_keypoints_src[0] = getPoint(0, g_TransPoint_1);
+	affine_transform_keypoints_src[1] = getPoint(0, g_TransPoint_2);
+	affine_transform_keypoints_src[2] = getPoint(0, g_TransPoint_3);
+
+	//---------------------------------------------------------------------------------------------------
+	points_dst[0] = getPoint(1, FACE_GET(LEFT_FACE_CONTOUR_1));
+	points_dst[1] = getPoint(1, FACE_GET(LEFT_FACE_CONTOUR_4));
+	points_dst[2] = getPoint(1, FACE_GET(LEFT_FACE_CONTOUR_6));
+	points_dst[3] = getPoint(1, FACE_GET(MIDDLE_CHIN));
+	points_dst[4] = getPoint(1, FACE_GET(RIGHT_FACE_CONTOUR_6));
+	points_dst[5] = getPoint(1, FACE_GET(RIGHT_FACE_CONTOUR_4));
+	points_dst[6] = getPoint(1, FACE_GET(RIGHT_FACE_CONTOUR_1));
+
+	cv::Point2i dst_nose_length = getPoint(1, FACE_GET(MIDDLE_NOSE_1)) - getPoint(1, FACE_GET(MIDDLE_NOSE_4));
+	cv::Point2i dst_lefteye_length = getPoint(1, FACE_GET(LEFT_EYE_4)) - getPoint(1, FACE_GET(LEFT_EYE_1));
+	cv::Point2i dst_righteye_length = getPoint(1, FACE_GET(RIGHT_EYE_4)) - getPoint(1, FACE_GET(RIGHT_EYE_1));
+
+
+	cv::Point2i dst_eye_length = getPoint(1, FACE_GET(RIGHT_EYE_1)) - getPoint(1, FACE_GET(LEFT_EYE_1));
+	cv::Point2i dst_chin_length = getPoint(1, FACE_GET(OUT_DOWN_MOUTH)) - getPoint(1, FACE_GET(MIDDLE_CHIN));
+
+	points_dst[7] = getPoint(1, FACE_GET(RIGHT_EYEBROW_1)) + dst_nose_length;
+	points_dst[8] = getPoint(1, FACE_GET(LEFT_EYEBROW_1)) + dst_nose_length;
+
+
+
+	affine_transform_keypoints_dst[0] = getPoint(1, g_TransPoint_1) + dst_chin_length * g_offset_v_1 + dst_eye_length * g_offset_h_1;
+    affine_transform_keypoints_dst[1] = getPoint(1, g_TransPoint_2) + dst_chin_length * g_offset_v_2 + dst_eye_length * g_offset_h_2;
+    affine_transform_keypoints_dst[2] = getPoint(1, g_TransPoint_3) + dst_chin_length * g_offset_v_3 + dst_eye_length * g_offset_h_3;
+
+	feather_amount.width = feather_amount.height = (int)cv::norm(points_dst[0] - points_dst[6])  * g_feater_scale;
 }
 
 void FaceExchanger::getTransformationMatrices()

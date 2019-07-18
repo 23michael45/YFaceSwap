@@ -13,6 +13,79 @@
 //#include <dlib/image_processing/render_face_detections.h>
 #include <dlib/image_processing.h>
 //#include <dlib/gui_widgets.h>
+#define LEFT_FACE_CONTOUR_1 1
+#define LEFT_FACE_CONTOUR_2 2
+#define LEFT_FACE_CONTOUR_3 3
+#define LEFT_FACE_CONTOUR_4 4
+#define LEFT_FACE_CONTOUR_5 5
+#define LEFT_FACE_CONTOUR_6 6
+#define LEFT_FACE_CONTOUR_7 7
+#define LEFT_FACE_CONTOUR_8 8
+#define MIDDLE_CHIN 9
+#define RIGHT_FACE_CONTOUR_1 17
+#define RIGHT_FACE_CONTOUR_2 16
+#define RIGHT_FACE_CONTOUR_3 15
+#define RIGHT_FACE_CONTOUR_4 14
+#define RIGHT_FACE_CONTOUR_5 13
+#define RIGHT_FACE_CONTOUR_6 12
+#define RIGHT_FACE_CONTOUR_7 11
+#define RIGHT_FACE_CONTOUR_8 10
+#define LEFT_EYEBROW_1 18
+#define LEFT_EYEBROW_2 19
+#define LEFT_EYEBROW_3 20
+#define LEFT_EYEBROW_4 21
+#define LEFT_EYEBROW_5 22
+#define RIGHT_EYEBROW_1 27
+#define RIGHT_EYEBROW_2 26
+#define RIGHT_EYEBROW_3 25
+#define RIGHT_EYEBROW_4 24
+#define RIGHT_EYEBROW_5 23
+#define LEFT_EYE_1 37
+#define LEFT_EYE_2 38
+#define LEFT_EYE_3 39
+#define LEFT_EYE_4 40
+#define LEFT_EYE_5 41
+#define LEFT_EYE_6 42
+#define RIGHT_EYE_1 46
+#define RIGHT_EYE_2 45
+#define RIGHT_EYE_3 44
+#define RIGHT_EYE_4 43
+#define RIGHT_EYE_5 48
+#define RIGHT_EYE_6 47
+#define  MIDDLE_NOSE_1 28
+#define  MIDDLE_NOSE_2 29
+#define  MIDDLE_NOSE_3 30
+#define  MIDDLE_NOSE_4 31
+#define  MIDDLE_NOSE_5 34
+#define  LEFT_NOSE_1 32
+#define  LEFT_NOSE_2 33
+#define  RIGHT_NOSE_1 36
+#define  RIGHT_NOSE_2 35
+#define OUT_LEFT_MOUTH 49
+#define OUT_RIGHT_MOUTH 55
+#define OUT_UP_MOUTH 52
+#define OUT_DOWN_MOUTH 58
+#define IN_LEFT_MOUTH 61
+#define IN_RIGHT_MOUTH 65
+#define IN_UP_MOUTH 63
+#define IN_DOWN_MOUTH 67
+#define OUT_LEFT_UP_MOUTH_1 50
+#define OUT_LEFT_UP_MOUTH_2 51
+#define OUT_RIGHT_UP_MOUTH_1 54
+#define OUT_RIGHT_UP_MOUTH_2 53
+#define OUT_LEFT_DOWN_MOUTH_1 60
+#define OUT_LEFT_DOWN_MOUTH_2 59
+#define OUT_RIGHT_DOWN_MOUTH_1 56
+#define OUT_RIGHT_DOWN_MOUTH_2 57
+#define IN_LEFT_UP_MOUTH 62
+#define IN_RIGHT_UP_MOUTH 64
+#define IN_LEFT_DOWN_MOUTH 68
+#define IN_RIGHT_DOWN_MOUTH 66
+#define FACE_GET(keypoint) (keypoint - 1)
+
+
+
+
 
 class FaceExchanger
 {
@@ -98,5 +171,6 @@ private:
     int target_hist_int[3][256];
     float source_histogram[3][256];
     float target_histogram[3][256];
+
 };
 

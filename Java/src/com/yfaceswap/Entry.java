@@ -13,9 +13,10 @@ public class Entry {
 			// String alignModelPath = "";
 
 			
-			String detectModelPath = "/usr/lib/jvm/java-8-openjdk-amd64/lib/haarcascade_frontalface_default.xml";			
-			String alignModelPath = "/usr/lib/jvm/java-8-openjdk-amd64/lib/shape_predictor_68_face_landmarks.dat"; 
-			if(!fslib.Init(detectModelPath,alignModelPath))
+			String detectModelPath = "/usr/lib/jvm/java-8-openjdk-amd64/lib/haarcascade_frontalface_default.xml";		
+			String alignModelPath = "/usr/lib/jvm/java-8-openjdk-amd64/lib/shape_predictor_68_face_landmarks.dat"; 		
+			String iniConfigPath = "/usr/lib/jvm/java-8-openjdk-amd64/lib/AppConfig.ini"; 
+			if(!fslib.Init(detectModelPath,alignModelPath,iniConfigPath))
 			{
 
 				System.out.println("Init Failed");

@@ -3,7 +3,7 @@ public class FaceSwapLib {
 	
 	
 	//初始化换脸计算库
-	public native boolean Init(String detectModelPath,String alignModelPath);
+	public native boolean Init(String detectModelPath,String alignModelPath,String iniConfigPath);
 	
 	//销毁换脸计算库
 	public native boolean Finalize();

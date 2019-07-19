@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     com_yfaceswap_FaceSwapLib
  * Method:    Init
- * Signature: (Ljava/lang/String;Ljava/lang/String;)Z
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_yfaceswap_FaceSwapLib_Init
-  (JNIEnv *, jobject, jstring, jstring);
+  (JNIEnv *, jobject, jstring, jstring, jstring);
 
 /*
  * Class:     com_yfaceswap_FaceSwapLib

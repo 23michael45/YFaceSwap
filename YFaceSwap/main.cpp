@@ -156,18 +156,17 @@ int main()
 	ifs.close();
 
 
-	gFacSwapLib.Init("haarcascade_frontalface_default.xml", "shape_predictor_68_face_landmarks.dat");
+	gFacSwapLib.Init("haarcascade_frontalface_default.xml", "shape_predictor_68_face_landmarks.dat","AppConfig.ini");
 
 	do 
 	{
-		mINI::INIFile file("AppConfig.ini");
-		mINI::INIStructure ini;
-		file.read(ini);
 
-		std::string srcImage = ini["images"]["source"];
-		std::string dstImage = ini["images"]["dest"];
-		std::string outImage = ini["images"]["out"];
-		std::string maskImage = ini["images"]["mask"];
+
+		gFacSwapLib.ReloadINI("AppConfig.ini");
+		std::string srcImage = gFacSwapLib.m_IniFile["images"]["source"];
+		std::string dstImage = gFacSwapLib.m_IniFile["images"]["dest"];
+		std::string outImage = gFacSwapLib.m_IniFile["images"]["out"];
+		std::string maskImage = gFacSwapLib.m_IniFile["images"]["mask"];
 
 
 		string retpath = "";
@@ -201,7 +200,7 @@ int main_dep()
 	/*FaceDetector detector(haarcascade_frontalface_default.xml);
 	FaceExchanger exchanger("shape_predictor_68_face_landmarks.dat");*/
 
-	gFacSwapLib.Init("haarcascade_frontalface_default.xml","shape_predictor_68_face_landmarks.dat");
+	gFacSwapLib.Init("haarcascade_frontalface_default.xml","shape_predictor_68_face_landmarks.dat","AppConfig.ini");
 
 	int key = 0;
 	do 

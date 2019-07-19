@@ -1,8 +1,39 @@
 #include "FaceSwapLib.h"
 
 
-bool FaceSwapLib::Init(std::string detectModelPath,std::string alignModelPath)
+FaceSwapLib::FaceSwapLib()
 {
+
+}
+
+bool FaceSwapLib::Init(std::string detectModelPath,std::string alignModelPath, std::string configINIPath)
+{
+	if (configINIPath == "")
+	{
+		m_IniFile["images"]["source"] = std::string("images/test01/user1.jpg");
+		m_IniFile["images"]["dest"] = std::string("images/test01/bk.jpg");
+		m_IniFile["images"]["out"] = std::string("images/test01/out.jpg");
+
+
+		m_IniFile["points"]["1"] = std::string("43 46");
+		m_IniFile["points"]["2"] = std::string("40 37");
+		m_IniFile["points"]["3"] = std::string("63 67");
+
+		m_IniFile["offsets"]["v1"] = std::string("*0.05");
+		m_IniFile["offsets"]["h1"] = std::string("0.015");
+		m_IniFile["offsets"]["v2"] = std::string("-0.05");
+		m_IniFile["offsets"]["h2"] = std::string("0.015");
+		m_IniFile["offsets"]["v3"] = std::string("0");
+		m_IniFile["offsets"]["h3"] = std::string("0");
+
+		m_IniFile["feather"]["scale"] = std::string("0.125");
+
+	}
+	else
+	{
+		ReloadINI(configINIPath);
+	}
+
 	if(detectModelPath == "")
 	{
 		m_spDetector = std::make_shared<FaceDetector>("haarcascade_frontalface_default.xml");
@@ -15,12 +46,13 @@ bool FaceSwapLib::Init(std::string detectModelPath,std::string alignModelPath)
 
 	if(alignModelPath == "")
 	{
-		m_spFaceExchanger = std::make_shared<FaceExchanger>("shape_predictor_68_face_landmarks.dat");
+		m_spFaceExchanger = std::make_shared<FaceExchanger>("shape_predictor_68_face_landmarks.dat", m_IniFile);
 	}
 	else
 	{
-		m_spFaceExchanger = std::make_shared<FaceExchanger>(alignModelPath);
+		m_spFaceExchanger = std::make_shared<FaceExchanger>(alignModelPath, m_IniFile);
 	}
+
 	
 	return true;
 }
@@ -30,6 +62,13 @@ bool FaceSwapLib::Finalize()
 	m_spDetector.reset();
 	m_spFaceExchanger.reset();
 
+	return true;
+}
+
+bool FaceSwapLib::ReloadINI(std::string configINIPath)
+{
+	mINI::INIFile file(configINIPath);
+	file.read(m_IniFile);
 	return true;
 }
 

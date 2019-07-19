@@ -12,6 +12,7 @@
 #include <dlib/image_processing/frontal_face_detector.h>
 //#include <dlib/image_processing/render_face_detections.h>
 #include <dlib/image_processing.h>
+#include "App/ini.h"
 //#include <dlib/gui_widgets.h>
 #define LEFT_FACE_CONTOUR_1 1
 #define LEFT_FACE_CONTOUR_2 2
@@ -91,7 +92,7 @@ class FaceExchanger
 {
 public:
     // Initialize face swapped with landmarks
-    FaceExchanger(const std::string landmarks_path);
+    FaceExchanger(const std::string landmarks_path, mINI::INIStructure& iniFile);
     ~FaceExchanger();
 
     //Swaps faces in rects on frame
@@ -171,6 +172,9 @@ private:
     int target_hist_int[3][256];
     float source_histogram[3][256];
     float target_histogram[3][256];
+
+
+	mINI::INIStructure& m_IniFile;
 
 };
 

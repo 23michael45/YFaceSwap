@@ -8,7 +8,7 @@
 cv::waitKey();\
 cv::destroyWindow(##name);
 
-FaceExchanger::FaceExchanger(const std::string landmarks_path)
+FaceExchanger::FaceExchanger(const std::string landmarks_path, mINI::INIStructure& iniFile):m_IniFile(iniFile)
 {
 
     try
@@ -102,6 +102,24 @@ cv::Mat FaceExchanger::getMinFrame(const cv::Mat &frame, cv::Rect &rect_src, cv:
     return frame(bounding_rect);
 }
 
+
+std::vector<std::string> split(const std::string &text, char sep)
+{
+	std::vector<std::string> tokens;
+	std::size_t start = 0, end = 0;
+	while ((end = text.find(sep, start)) != std::string::npos) {
+		if (end != start) {
+			tokens.push_back(text.substr(start, end - start));
+		}
+		start = end + 1;
+	}
+	if (end != start) {
+		tokens.push_back(text.substr(start));
+	}
+	return tokens;
+}
+
+
 void FaceExchanger::getFacePoints(const cv::Mat &src,const cv::Mat &dst)
 {
     using namespace dlib;
@@ -148,22 +166,8 @@ void FaceExchanger::getFacePoints(const cv::Mat &src,const cv::Mat &dst)
 
 
 
-	mINI::INIFile file("AppConfig.ini");
-	mINI::INIStructure ini;
-	file.read(ini);
-	int g_TransPoint_1 = atoi(ini["points"]["1"].c_str()) - 1;
-	int g_TransPoint_2 = atoi(ini["points"]["2"].c_str()) - 1;
-	int g_TransPoint_3 = atoi(ini["points"]["3"].c_str()) - 1;
 
-
-	float g_offset_v_1 = atof(ini["offsets"]["v1"].c_str());
-	float g_offset_h_1 = atof(ini["offsets"]["h1"].c_str());
-	float g_offset_v_2 = atof(ini["offsets"]["v2"].c_str());
-	float g_offset_h_2 = atof(ini["offsets"]["h2"].c_str());
-	float g_offset_v_3 = atof(ini["offsets"]["v3"].c_str());
-	float g_offset_h_3 = atof(ini["offsets"]["h3"].c_str());
-
-	float g_feater_scale = atof(ini["feather"]["scale"].c_str());
+	float g_feater_scale = atof(m_IniFile["feather"]["scale"].c_str());
 
     points_src[0] = getPoint(0, FACE_GET(LEFT_FACE_CONTOUR_1));
     points_src[1] = getPoint(0, FACE_GET(LEFT_FACE_CONTOUR_4));
@@ -184,10 +188,34 @@ void FaceExchanger::getFacePoints(const cv::Mat &src,const cv::Mat &dst)
     points_src[8] = getPoint(0, FACE_GET(LEFT_EYEBROW_1)) + src_nose_length;
 
 
+	for (int i = 1; i <= 3; i++)
+	{
+		std::stringstream ss;
+		ss << i;
+		std::string str = ss.str();
 
-	affine_transform_keypoints_src[0] = getPoint(0, g_TransPoint_1);
-	affine_transform_keypoints_src[1] = getPoint(0, g_TransPoint_2);
-	affine_transform_keypoints_src[2] = getPoint(0, g_TransPoint_3);
+
+		std::string s = m_IniFile["points"][str];
+		auto vec = split(s, ' ');
+
+
+		int count = 0;
+		cv::Point2i pt(0,0);
+		for (auto index : vec)
+		{
+			int keypointIdx = atoi(index.c_str());
+
+			pt += getPoint(0, FACE_GET(keypointIdx));
+			count++;
+		}
+		pt = pt / count;
+
+
+		affine_transform_keypoints_src[i-1] = pt;
+
+	}
+
+
 
 	//---------------------------------------------------------------------------------------------------
 	points_dst[0] = getPoint(1, FACE_GET(LEFT_FACE_CONTOUR_1));
@@ -211,9 +239,38 @@ void FaceExchanger::getFacePoints(const cv::Mat &src,const cv::Mat &dst)
 
 
 
-	affine_transform_keypoints_dst[0] = getPoint(1, g_TransPoint_1) + dst_chin_length * g_offset_v_1 + dst_eye_length * g_offset_h_1;
-    affine_transform_keypoints_dst[1] = getPoint(1, g_TransPoint_2) + dst_chin_length * g_offset_v_2 + dst_eye_length * g_offset_h_2;
-    affine_transform_keypoints_dst[2] = getPoint(1, g_TransPoint_3) + dst_chin_length * g_offset_v_3 + dst_eye_length * g_offset_h_3;
+	for (int i = 1; i <= 3; i++)
+	{
+		std::stringstream ss;
+		ss << i;
+		std::string str = ss.str();
+
+
+		std::string s = m_IniFile["points"][str];
+		auto vec = split(s, ' ');
+
+
+		int count = 0;
+		cv::Point2i pt(0, 0);
+		for (auto index : vec)
+		{
+			int keypointIdx = atoi(index.c_str());
+
+			pt += getPoint(1, FACE_GET(keypointIdx));
+			count++;
+		}
+		pt = pt / count;
+
+
+
+
+		float g_offset_v = atof(m_IniFile["offsets"]["v"+str].c_str());
+		float g_offset_h = atof(m_IniFile["offsets"]["h" + str].c_str());
+
+		affine_transform_keypoints_dst[i-1] = pt + dst_chin_length * g_offset_v + dst_eye_length * g_offset_h;
+
+	}
+
 
 	feather_amount.width = feather_amount.height = (int)cv::norm(points_dst[0] - points_dst[6])  * g_feater_scale;
 }

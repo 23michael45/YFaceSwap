@@ -361,12 +361,18 @@ void FaceExchanger::colorCorrectFaces()
 	//ShowAndClose("frame_src(big_rect_src)", frame_src(big_rect_src))
 	//ShowAndClose("warpped_faces_dst(big_rect_src)", warpped_faces_dst(big_rect_src))
 	//ShowAndClose("warpped_mask_dst(big_rect_src)", warpped_mask_dst(big_rect_src))
-	
+
+	specifiyHistogram(frame_src(big_rect_src), warpped_faces_dst(big_rect_src), warpped_mask_dst(big_rect_src));
 
 
 
-    specifiyHistogram(frame_src(big_rect_src), warpped_faces_dst(big_rect_src), warpped_mask_dst(big_rect_src));
+	//ShowAndClose("frame_dst(big_rect_src)", frame_dst(big_rect_dst))
+	//	ShowAndClose("warpped_faces_src(big_rect_dst)", warpped_faces_src(big_rect_dst))
+	//	ShowAndClose("warpped_mask_src(big_rect_dst)", warpped_mask_src(big_rect_dst))
+
+
     specifiyHistogram(frame_dst(big_rect_dst), warpped_faces_src(big_rect_dst), warpped_mask_src(big_rect_dst));
+
 }
 
 void FaceExchanger::featherMask(cv::Mat &refined_masks)
@@ -414,6 +420,10 @@ inline void FaceExchanger::pasteFacesOnFrame()
 void FaceExchanger::specifiyHistogram(const cv::Mat source_image, cv::Mat target_image, cv::Mat mask)
 {
 
+	//ShowAndClose("source_image",source_image)
+	//ShowAndClose("target_image",target_image)
+	//ShowAndClose("mask",mask)
+
     std::memset(source_hist_int, 0, sizeof(int) * 3 * 256);
     std::memset(target_hist_int, 0, sizeof(int) * 3 * 256);
 
@@ -442,7 +452,7 @@ void FaceExchanger::specifiyHistogram(const cv::Mat source_image, cv::Mat target
         }
     }
 
-    // Calc CDF
+    // Calc CDF  (Cumulative Distribution Function)
     for (size_t i = 1; i < 256; i++)
     {
         source_hist_int[0][i] += source_hist_int[0][i - 1];

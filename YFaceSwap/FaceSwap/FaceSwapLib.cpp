@@ -28,6 +28,9 @@ bool FaceSwapLib::Init(std::string detectModelPath,std::string alignModelPath, s
 
 		m_IniFile["feather"]["scale"] = std::string("0.125");
 
+
+		m_IniFile["dermabrasion"]["value1"] = std::string("6");
+		m_IniFile["dermabrasion"]["value2"] = std::string("1");
 	}
 	else
 	{

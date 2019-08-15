@@ -28,12 +28,14 @@ FaceExchanger::~FaceExchanger()
 {
 }
 
-cv::Mat FaceBeauty(cv::Mat &src)
+cv::Mat FaceExchanger::FaceBeauty(cv::Mat &src)
 {
 	cv::Mat dst;
 
 	//int value1 = 3, value2 = 1;     //磨皮程度与细节程度的确定
-	int value1 = 6, value2 = 1;     //磨皮程度与细节程度的确定
+
+	int value1 = atoi(m_IniFile["dermabrasion"]["value1"].c_str());
+	int value2 = atoi(m_IniFile["dermabrasion"]["value2"].c_str());
 
 	int dx = value1 * 5;    //双边滤波参数之一  
 	double fc = value1 * 12.5; //双边滤波参数之一  

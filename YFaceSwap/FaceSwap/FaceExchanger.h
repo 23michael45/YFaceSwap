@@ -99,6 +99,9 @@ public:
     void swapFaces(cv::Mat &src,cv::Mat &dst, cv::Rect &rect_src, cv::Rect &rect_dst,bool blur = true);
 
 private:
+	// Beauty face
+	cv::Mat FaceBeauty(cv::Mat &src);
+
     // Returns minimal Mat containing both faces
     cv::Mat getMinFrame(const cv::Mat &frame, cv::Rect &rect_src, cv::Rect &rect_dst);
 

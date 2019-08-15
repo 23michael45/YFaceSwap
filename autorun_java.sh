@@ -1,0 +1,1 @@
+nohup java -jar base-0.0.1-SNAPSHOT.jar > log_base.txt &

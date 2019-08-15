@@ -96,7 +96,7 @@ public:
     ~FaceExchanger();
 
     //Swaps faces in rects on frame
-    void swapFaces(cv::Mat &src,cv::Mat &dst, cv::Rect &rect_src, cv::Rect &rect_dst);
+    void swapFaces(cv::Mat &src,cv::Mat &dst, cv::Rect &rect_src, cv::Rect &rect_dst,bool blur = true);
 
 private:
     // Returns minimal Mat containing both faces

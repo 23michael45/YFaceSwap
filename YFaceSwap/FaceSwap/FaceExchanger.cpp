@@ -28,9 +28,45 @@ FaceExchanger::~FaceExchanger()
 {
 }
 
-void FaceExchanger::swapFaces(cv::Mat &src, cv::Mat &dst, cv::Rect &rect_src, cv::Rect &rect_dst)
+cv::Mat FaceBeauty(cv::Mat &src)
 {
-	frame_src = src;
+	cv::Mat dst;
+
+	//int value1 = 3, value2 = 1;     //磨皮程度与细节程度的确定
+	int value1 = 6, value2 = 1;     //磨皮程度与细节程度的确定
+
+	int dx = value1 * 5;    //双边滤波参数之一  
+	double fc = value1 * 12.5; //双边滤波参数之一  
+
+	int p = 50; //透明度  
+
+	cv::Mat temp1, temp2, temp3, temp4;
+
+	//双边滤波  
+	bilateralFilter(src, temp1, dx, fc, fc);
+
+	temp2 = (temp1 - src + 128);
+
+	//高斯模糊  
+	GaussianBlur(temp2, temp3, cv::Size(2 * value2 - 1, 2 * value2 - 1), 0, 0);
+
+	temp4 = src + 2 * temp3 - 255;
+
+	dst = (src*(100 - p) + temp4 * p) / 100;
+
+	return dst;
+}
+
+void FaceExchanger::swapFaces(cv::Mat &src, cv::Mat &dst, cv::Rect &rect_src, cv::Rect &rect_dst,bool blur)
+{
+	if (blur)
+	{
+		frame_src = FaceBeauty(src);
+	}
+	else
+	{
+		frame_src = src;
+	}
 	frame_dst = dst;
     //small_frame = getMinFrame(frame, rect_src, rect_dst);
 	this->rect_src = rect_src;
